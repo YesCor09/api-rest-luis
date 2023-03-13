@@ -2,7 +2,7 @@
   "name": "nodejs",
   "version": "1.0.0",
   "main": "index.js",
-  "engines":{
+  "engines": {
     "node": "^18.14.2"
   },
   "type": "module",
@@ -22,7 +22,8 @@
     "fs-extra": "^11.1.0",
     "mongoose": "^7.0.0",
     "morgan": "^1.10.0",
-    "node-fetch": "^3.2.6"
+    "node-fetch": "^3.2.6",
+    "nodemailer": "^6.9.1"
   },
   "description": "",
   "devDependencies": {
