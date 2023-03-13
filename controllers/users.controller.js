@@ -60,6 +60,19 @@ export const getUserById = async (req, res) => {
     }
 }
 
+export const getUserByEmail = async (req, res) => {
+    try {
+        const user = await User.find(req.params.email)
+
+        if(!user) return res.status(404).json({
+            message: 'El usuario no existe'
+        })
+        return res.send(user)
+    } catch (error){
+        return res.status(500).json({message:error.message})
+    }
+}
+
 export const valUser = async (req, res) => {
     try {
         const {email,password} = req.body
@@ -137,27 +150,3 @@ export const recPass = async (req, res) =>{
         return res.status(500).send('Ha ocurrido un error en el servidor');
     }
 }
-
-// export const restablecerContrasena = async (req, res) =>{
-//     try {
-//         const { token } = req.params;
-//         const { password } = req.body;
-    
-//         // Verificar si el token proporcionado es válido y no ha expirado
-//         const user = await User.findOne({ resetToken: new ObjectId(token), resetTokenExpiration: { $gt: new Date() } });
-    
-//         if (!user) {
-//           return res.status(404).send('El enlace de restablecimiento de contraseña no es válido o ha expirado');
-//         }
-    
-//         // Restablecer la contraseña del usuario y actualizar su información en la base de datos
-//         const salt = bcrypt.genSaltSync(10);
-//         const hashedPassword = bcrypt.hashSync(password, salt);
-//         await User.updateOne({_id: user._id }, { $set: { password: hashedPassword, resetToken: null, resetTokenExpiration: null } })
-
-//         return res.status(200).send('Se ha restablecido la contraseña correctamente');
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send('Ha ocurrido un error en el servidor');
-//     }
-// }
