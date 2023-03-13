@@ -1,6 +1,9 @@
 import User from '../models/users.model.js'
 import {uploadImage, deleteImage} from '../utils/cloudinary.js'
 import fs from 'fs-extra'
+import { ObjectId } from 'mongodb';
+import { transporter } from '../utils/nodemailer.js';
+
 
 export const getUsers = async (req, res) => {
   try{
@@ -99,3 +102,60 @@ export const updateUser = async (req, res) => {
         return res.status(500).json({message:error.message})
     }
 }
+
+export const recPass = async (req, res) =>{
+    try {
+        const { email } = req.body;
+    
+        // Verificar si el correo electrónico proporcionado está registrado en la base de datos
+        const user = await User.findOne({ email });
+    
+        if (!user) {
+          return res.status(404).send('El correo electrónico proporcionado no está registrado');
+        }
+    
+        // Generar un token único para el usuario y almacenarlo en la base de datos
+        const token = new ObjectId();
+        const expiration = new Date(Date.now() + 3600000); // La fecha de vencimiento será en una hora
+        await User.updateOne({ _id: user._id }, { $set: { resetToken: token, resetTokenExpiration: expiration } });
+    
+        // Enviar el correo electrónico al usuario con un enlace que incluya el token generado
+        //const resetLink = `http://192.168.1.163:3000/restablecerContrasena/${token}`;
+        await transporter.sendMail({
+          from: 'toopfodye@gmail.com',
+          to: email,
+          subject: 'Recuperación de contraseña',
+          text: `Su contraseña de acceso a la aplicacion es: ${user.password}. 
+          \nSi usted no ha solicitado un correo de recuperacion es posible que alguien este intentando acceder a su cuenta, le recomendamos cambiar su contraseña, este proceso puede realizarlo desde la aplicacion.`
+        });
+    
+        return res.status(200).send('Se ha enviado un correo electrónico de recuperación de contraseña');
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send('Ha ocurrido un error en el servidor');
+    }
+}
+
+// export const restablecerContrasena = async (req, res) =>{
+//     try {
+//         const { token } = req.params;
+//         const { password } = req.body;
+    
+//         // Verificar si el token proporcionado es válido y no ha expirado
+//         const user = await User.findOne({ resetToken: new ObjectId(token), resetTokenExpiration: { $gt: new Date() } });
+    
+//         if (!user) {
+//           return res.status(404).send('El enlace de restablecimiento de contraseña no es válido o ha expirado');
+//         }
+    
+//         // Restablecer la contraseña del usuario y actualizar su información en la base de datos
+//         const salt = bcrypt.genSaltSync(10);
+//         const hashedPassword = bcrypt.hashSync(password, salt);
+//         await User.updateOne({_id: user._id }, { $set: { password: hashedPassword, resetToken: null, resetTokenExpiration: null } })
+
+//         return res.status(200).send('Se ha restablecido la contraseña correctamente');
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).send('Ha ocurrido un error en el servidor');
+//     }
+// }
