@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/users/', getUsers)
 router.get('/users/:id', getUserById)
-router.get('/users/:email', getUserByEmail)
+router.get('/usersEmail/:email', getUserByEmail)
 router.post('/valUsers', valUser)
 router.post('/recuPassword', recPass)
 router.post('/users', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), createUser)
