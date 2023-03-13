@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import {createUser, updateUser, deleteUser, valUser, getUsers, getUserById} from '../controllers/users.controller.js'
+import {createUser, updateUser, deleteUser, valUser, getUsers, getUserById, recPass } from '../controllers/users.controller.js'
 import fileUpload from 'express-fileupload'
 
 const router = Router()
@@ -7,6 +7,7 @@ const router = Router()
 router.get('/users/', getUsers)
 router.get('/users/:id', getUserById)
 router.post('/valUsers', valUser)
+router.post('/recuPassword', recPass)
 router.post('/users', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), createUser)
 router.put('/users/:id', updateUser)
 router.delete('/users/:id', deleteUser)
