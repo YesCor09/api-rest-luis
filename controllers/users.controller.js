@@ -115,9 +115,11 @@ export const recPass = async (req, res) =>{
         }
     
         // Generar un token único para el usuario y almacenarlo en la base de datos
-        const token = new ObjectId();
-        const expiration = new Date(Date.now() + 3600000); // La fecha de vencimiento será en una hora
-        await User.updateOne({ _id: user._id }, { $set: { resetToken: token, resetTokenExpiration: expiration } });
+        const token = Math.round(Math.random() * 1000000);
+
+        //const expiration = new Date(Date.now() + 3600000); // La fecha de vencimiento será en una hora
+
+        await User.updateOne({ _id: user._id }, { $set: { resetToken: token } });
     
         // Enviar el correo electrónico al usuario con un enlace que incluya el token generado
         //const resetLink = `http://192.168.1.163:3000/restablecerContrasena/${token}`;
@@ -125,7 +127,7 @@ export const recPass = async (req, res) =>{
             from: 'toopfodye@gmail.com',
             to: email,
             subject: 'Recuperación de contraseña',
-            text: `Su contraseña de acceso a la aplicacion es: ${user.password}
+            text: `Su contraseña de acceso a la aplicacion es: ${token}
             \nSi usted no ha solicitado un correo de recuperacion es posible que alguien este intentando acceder a su cuenta, le recomendamos cambiar su contraseña, este proceso puede realizarlo desde la aplicacion.`
         });
 
