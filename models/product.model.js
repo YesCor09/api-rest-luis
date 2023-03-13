@@ -15,6 +15,9 @@ const productSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
+  categorie:{
+    type: String
+  },
   image:{
     public_id: String,
     secure_url: String
