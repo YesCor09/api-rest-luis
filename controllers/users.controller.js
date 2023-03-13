@@ -142,7 +142,7 @@ export const recPass = async (req, res) =>{
             to: email,
             subject: 'Recuperación de contraseña',
             text: `Su codigo de recuperacion de contraseña es: ${token}
-            \nSi usted no ha solicitado un correo de recuperacion ignore este correo.`
+            \nSi usted no ha solicitado este correo de recuperacion ignorelo.`
         });
 
         return res.json({message:'Se ha enviado un correo electrónico de recuperación de contraseña'})
