@@ -18,14 +18,6 @@ const usersSchema = mongoose.Schema({
   image:{
     public_id: String,
     secure_url: String
-  },
-  resetToken: { 
-    type: String, 
-    default: null 
-  },
-  resetTokenExpiration: { 
-    type: Date, 
-    default: null 
   }
 })
 
