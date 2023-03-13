@@ -111,7 +111,7 @@ export const recPass = async (req, res) =>{
         const user = await User.findOne({ email });
     
         if (!user) {
-          return res.status(404).send('El correo electrónico proporcionado no está registrado');
+            return res.status(500).json({message:'El correo electrónico proporcionado no está registrado'})
         }
     
         // Generar un token único para el usuario y almacenarlo en la base de datos
@@ -122,14 +122,14 @@ export const recPass = async (req, res) =>{
         // Enviar el correo electrónico al usuario con un enlace que incluya el token generado
         //const resetLink = `http://192.168.1.163:3000/restablecerContrasena/${token}`;
         await transporter.sendMail({
-          from: 'toopfodye@gmail.com',
-          to: email,
-          subject: 'Recuperación de contraseña',
-          text: `Su contraseña de acceso a la aplicacion es: ${user.password}. 
-          \nSi usted no ha solicitado un correo de recuperacion es posible que alguien este intentando acceder a su cuenta, le recomendamos cambiar su contraseña, este proceso puede realizarlo desde la aplicacion.`
+            from: 'toopfodye@gmail.com',
+            to: email,
+            subject: 'Recuperación de contraseña',
+            text: `Su contraseña de acceso a la aplicacion es: ${user.password}. 
+            \nSi usted no ha solicitado un correo de recuperacion es posible que alguien este intentando acceder a su cuenta, le recomendamos cambiar su contraseña, este proceso puede realizarlo desde la aplicacion.`
         });
-    
-        return res.status(200).send('Se ha enviado un correo electrónico de recuperación de contraseña');
+
+        return res.json({message:'Se ha enviado un correo electrónico de recuperación de contraseña'})
     } catch (error) {
         console.log(error);
         return res.status(500).send('Ha ocurrido un error en el servidor');
