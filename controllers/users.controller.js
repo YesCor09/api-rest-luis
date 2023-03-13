@@ -127,8 +127,8 @@ export const recPass = async (req, res) =>{
             from: 'toopfodye@gmail.com',
             to: email,
             subject: 'Recuperación de contraseña',
-            text: `Su contraseña de acceso a la aplicacion es: ${token}
-            \nSi usted no ha solicitado un correo de recuperacion es posible que alguien este intentando acceder a su cuenta, le recomendamos cambiar su contraseña, este proceso puede realizarlo desde la aplicacion.`
+            text: `Su codigo de recuperacion de contraseña es: ${token}
+            \nSi usted no ha solicitado un correo de recuperacion ignore este correo.`
         });
 
         return res.json({message:'Se ha enviado un correo electrónico de recuperación de contraseña'})
