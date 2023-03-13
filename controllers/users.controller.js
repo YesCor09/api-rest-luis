@@ -63,7 +63,7 @@ export const getUserById = async (req, res) => {
 export const getUserByEmail = async (req, res) => {
     try {
         const {email} = req.body
-        const user = await User.findOne(email)
+        const user = await User.findOne({email})
 
         if(!user) return res.status(404).json({
             message: 'El usuario no existe'
