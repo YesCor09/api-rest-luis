@@ -13,12 +13,13 @@ export const getProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const {name,description,price} = req.body
+    const {name,description,price,categorie} = req.body
     
     const product = new Product({
       name,
       description,
-      price
+      price,
+      categorie
     })
 
     if(req.files?.image){
