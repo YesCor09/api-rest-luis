@@ -53,7 +53,7 @@ export const getProduct = async (req, res) => {
 
 export const getProductCategorie = async () =>{
     try {
-        const categorie = req.body
+        const {categorie} = req.body
         const product = await Product.find({categorie})
         return res.send(product)
     } catch (error) {
