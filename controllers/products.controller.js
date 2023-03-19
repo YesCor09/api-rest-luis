@@ -51,7 +51,7 @@ export const getProduct = async (req, res) => {
     }
 }
 
-export const getProductCategorie = async () =>{
+export const getProductCategorie = async (req, res) =>{
     try {
         const {categorie} = req.body
         const product = await Product.find({categorie})
