@@ -11,7 +11,6 @@ router.post('/valUsers', valUser)
 router.post('/recuPassword', recPass)
 router.post('/users', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), createUser)
 router.put('/users/:id', updateUser)
-router.put('/usersUpdatePass/:id', updateUserPassword)
 router.delete('/users/:id', deleteUser)
 
 export default router
