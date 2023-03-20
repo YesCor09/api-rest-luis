@@ -112,12 +112,12 @@ export const updateUser = async (req, res) => {
         
         const existingUserByName = await User.findOne({ name: name, _id: { $ne: id } });
         if (existingUserByName) {
-            return res.status(400).json({ message: 'El nombre ya existe en la base de datos' });
+            return res.status(400).json({ message: 'El nombre de usuario ya esta registrado' });
         }
         
         const existingUserByEmail = await User.findOne({ email: email, _id: { $ne: id } });
         if (existingUserByEmail) {
-            return res.status(400).json({ message: 'El correo electrónico ya existe en la base de datos' });
+            return res.status(400).json({ message: 'Este correo ya esta registrado' });
         }
         
         const userUpdate = await User.findByIdAndUpdate(id, req.body, {
