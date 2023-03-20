@@ -107,13 +107,37 @@ export const deleteUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const {id} = req.params;
-        const userUpdate = await User.findByIdAndUpdate(id, req.body, {
-            new:true
+        const {name, email} = req.body
+        const res = await fetch('https://api-rest-luis-r45f.vercel.app/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email
+            })
         })
-        return res.json(userUpdate)
-    } catch (error){
-        return res.status(500).json({message:error.message})
+        const data = await res.json()
+        if(data.message=='El nombre de Usuario y Correo ya estan en uso'){
+            return res.send(data.message)
+        }else if(data.message=='El correo ya esta en uso'){
+            return res.send(data.message)
+        }else if(data.message=='El usuario ya esta en uso'){
+            return res.send(data.message)
+        }else{
+            try {
+                const {id} = req.body;
+                const userUpdate = await User.findByIdAndUpdate(id, req.body, {
+                    new:true
+                })
+                return res.json(userUpdate)
+            } catch (error){
+                return res.status(500).json({message:error.message})
+            }
+        }
+    } catch (error) {
+        console.error(error)
     }
 }
 
@@ -128,15 +152,13 @@ export const recPass = async (req, res) =>{
             return res.status(500).json({message:'El correo electrónico proporcionado no está registrado'})
         }
     
-        // Generar un token único para el usuario y almacenarlo en la base de datos
+        // crear token para el usuario
         const token = Math.round(Math.random() * 1000000);
 
-        //const expiration = new Date(Date.now() + 3600000); // La fecha de vencimiento será en una hora
-
+        //actualizar en la base de datos poniendole el token generado anteriormente
         await User.updateOne({ _id: user._id }, { $set: { resetToken: token } });
     
-        // Enviar el correo electrónico al usuario con un enlace que incluya el token generado
-        //const resetLink = `http://192.168.1.163:3000/restablecerContrasena/${token}`;
+        // enviar el token al correo electronico proporcionado
         await transporter.sendMail({
             from: 'toopfodye@gmail.com',
             to: email,
