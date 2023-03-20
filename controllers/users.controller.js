@@ -111,7 +111,7 @@ export const updateUser = async (req, res) => {
         const res = await fetch('https://api-rest-luis-r45f.vercel.app/users', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 name: name,
