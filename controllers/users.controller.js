@@ -108,10 +108,18 @@ export const deleteUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const {id} = req.params;
-        const existUser = await User.findOne(req.body)
-        if(existUser && existUser._id.toString() !== id){
-            return res.status(400).json({message: 'Estos datos ya estan registrados'})
+        const {name, email} = req.body
+        
+        const existingUserByName = await User.findOne({ name: name, _id: { $ne: id } });
+        if (existingUserByName) {
+            return res.status(400).json({ message: 'El nombre ya existe en la base de datos' });
         }
+        
+        const existingUserByEmail = await User.findOne({ email: email, _id: { $ne: id } });
+        if (existingUserByEmail) {
+            return res.status(400).json({ message: 'El correo electrónico ya existe en la base de datos' });
+        }
+        
         const userUpdate = await User.findByIdAndUpdate(id, req.body, {
             new:true
         })
