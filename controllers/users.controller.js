@@ -108,6 +108,10 @@ export const deleteUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const {id} = req.params;
+        const existUser = await User.findOne(req.body)
+        if(existUser && existUser._id.toString() !== id){
+            return res.status(400).json({message: 'Estos datos ya estan registrados'})
+        }
         const userUpdate = await User.findByIdAndUpdate(id, req.body, {
             new:true
         })
