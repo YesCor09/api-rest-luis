@@ -107,36 +107,13 @@ export const deleteUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const {id, name, email} = req.body
-        const res = await fetch('https://api-rest-luis-r45f.vercel.app/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name,
-                email: email
-            })
+        const {id} = req.params;
+        const userUpdate = await User.findByIdAndUpdate(id, req.body, {
+            new:true
         })
-        const data = await res.json()
-        if(data.message=='El nombre de Usuario y Correo ya estan en uso'){
-            return res.status(500).json({message:'El nombre de Usuario y Correo ya estan en uso'})
-        }else if(data.message=='El correo ya esta en uso'){
-            return res.status(500).json({message:'El correo ya esta en uso'})
-        }else if(data.message=='El usuario ya esta en uso'){
-            return res.status(500).json({message:'El usuario ya esta en uso'})
-        }else{
-            try {
-                const userUpdate = await User.findByIdAndUpdate(id, req.body, {
-                    new:true
-                })
-                return res.json(userUpdate)
-            } catch (error){
-                return res.status(500).json({message:error.message})
-            }
-        }
-    } catch (error) {
-        console.error(error)
+        return res.json(userUpdate)
+    } catch (error){
+        return res.status(500).json({message:error.message})
     }
 }
 
