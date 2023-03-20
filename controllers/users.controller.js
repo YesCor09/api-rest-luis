@@ -107,7 +107,7 @@ export const deleteUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const {name, email} = req.body
+        const {id, name, email} = req.body
         const res = await fetch('https://api-rest-luis-r45f.vercel.app/users', {
             method: 'POST',
             headers: {
@@ -127,7 +127,6 @@ export const updateUser = async (req, res) => {
             return res.status(500).json({message:'El usuario ya esta en uso'})
         }else{
             try {
-                const {id} = req.body;
                 const userUpdate = await User.findByIdAndUpdate(id, req.body, {
                     new:true
                 })
