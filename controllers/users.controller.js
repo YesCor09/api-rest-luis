@@ -120,11 +120,11 @@ export const updateUser = async (req, res) => {
         })
         const data = await res.json()
         if(data.message=='El nombre de Usuario y Correo ya estan en uso'){
-            return res.send(data.message)
+            return res.status(500).json({message:'El nombre de Usuario y Correo ya estan en uso'})
         }else if(data.message=='El correo ya esta en uso'){
-            return res.send(data.message)
+            return res.status(500).json({message:'El correo ya esta en uso'})
         }else if(data.message=='El usuario ya esta en uso'){
-            return res.send(data.message)
+            return res.status(500).json({message:'El usuario ya esta en uso'})
         }else{
             try {
                 const {id} = req.body;
