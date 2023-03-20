@@ -129,19 +129,6 @@ export const updateUser = async (req, res) => {
     }
 }
 
-export const updateUserPassword = async (req, res) => {
-    try {
-        const {id} = req.params;
-        
-        const userUpdate = await User.findByIdAndUpdate(id, req.body, {
-            new:true
-        })
-        return res.json(userUpdate)
-    } catch (error){
-        return res.status(500).json({message:error.message})
-    }
-}
-
 export const recPass = async (req, res) =>{
     try {
         const { email } = req.body;
