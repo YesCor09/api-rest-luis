@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import {createUser, updateUser, deleteUser, valUser, getUsers, getUserById, recPass, getUserByEmail, updateUserPassword } from '../controllers/users.controller.js'
+import {createUser, updateUser, deleteUser, valUser, getUsers, getUserById, recPass, getUserByEmail } from '../controllers/users.controller.js'
 import fileUpload from 'express-fileupload'
 
 const router = Router()
