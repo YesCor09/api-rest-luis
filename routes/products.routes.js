@@ -8,7 +8,7 @@ router.get('/products', getProducts)
 router.get('/products/:id', getProduct)
 router.post('/getProductsCategorie', getProductCategorie)
 router.post('/products', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), createProduct)
-router.put('/products/:id', updateProduct)
+router.put('/updateProducts/:id', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), updateProduct)
 router.delete('/products/:id', deleteProduct)
 
 export default router
