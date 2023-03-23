@@ -23,12 +23,12 @@ export const createProduct = async (req, res) => {
         })
 
         if(req.files?.image){
-        const rs = await uploadImage(req.files.image.tempFilePath)
-        product.image = {
-            public_id: rs.public_id,
-            secure_url: rs.secure_url
-        }
-        await fs.unlink(req.files.image.tempFilePath)
+            const rs = await uploadImage(req.files.image.tempFilePath)
+            product.image = {
+                public_id: rs.public_id,
+                secure_url: rs.secure_url
+            }
+            await fs.unlink(req.files.image.tempFilePath)
         }
         
         await product.save()
@@ -82,8 +82,18 @@ export const updateProduct = async (req, res) => {
     try {
         const {id} = req.params;
         const productUpdate = await Product.findByIdAndUpdate(id, req.body, {
-        new:true
+            new:true
         })
+
+        if(req.files?.image){
+            const rs = await uploadImage(req.files.image.tempFilePath)
+            productUpdate.image = {
+                public_id: rs.public_id,
+                secure_url: rs.secure_url
+            }
+            await fs.unlink(req.files.image.tempFilePath)
+        }
+
         return res.json(productUpdate)
     } catch (error){
         return res.status(500).json({message:error.message})
