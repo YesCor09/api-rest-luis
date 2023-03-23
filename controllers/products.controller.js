@@ -82,28 +82,7 @@ export const updateProduct = async (req, res) => {
     try {
         const {id} = req.params;
 
-        const {name,description,price,categorie} = req.body
-        
-        const product = ({
-            name,
-            description,
-            price,
-            categorie
-        })
-        
-        const productImage = await Product.findById(id)
-        await deleteImage(productImage.image.public_id)
-
-        if(req.files?.image){
-            const rs = await uploadImage(req.files.image.tempFilePath)
-            product.image = {
-                public_id: rs.public_id,
-                secure_url: rs.secure_url
-            }
-            //await fs.unlink(req.files.image.tempFilePath)
-        }
-
-        const productUpdate = await Product.findByIdAndUpdate(id, product, {
+        const productUpdate = await Product.findByIdAndUpdate(id, req.body, {
             new:true
         })
 
