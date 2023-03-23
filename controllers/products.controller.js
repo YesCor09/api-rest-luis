@@ -81,10 +81,7 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const {id} = req.params;
-        const productUpdate = await Product.findByIdAndUpdate(id, req.body, {
-            new:true
-        })
-
+        
         if(req.files?.image){
             const rs = await uploadImage(req.files.image.tempFilePath)
             productUpdate.image = {
@@ -93,7 +90,11 @@ export const updateProduct = async (req, res) => {
             }
             await fs.unlink(req.files.image.tempFilePath)
         }
-
+        
+        const productUpdate = await Product.findByIdAndUpdate(id, req.body, {
+            new:true
+        })
+        
         return res.json(productUpdate)
     } catch (error){
         return res.status(500).json({message:error.message})
