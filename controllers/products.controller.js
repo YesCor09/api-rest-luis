@@ -1,6 +1,7 @@
 import Product from '../models/product.model.js'
 import {uploadImage, deleteImage} from '../utils/cloudinary.js'
 import fs from 'fs-extra'
+import {ObjectId}  from 'mongodb'
 
 export const getProducts = async (req, res) => {
     try{
@@ -43,7 +44,7 @@ export const getProduct = async (req, res) => {
         const product = await Product.findById(req.params.id)
 
         if(!product) return res.status(404).json({
-            message: 'El producto no existe'
+        message: 'El producto no existe'
         })
         return res.send(product)
     } catch (error){
@@ -65,7 +66,7 @@ export const deleteProduct = async (req, res) => {
     try {
         const product = await Product.findByIdAndDelete(req.params.id)
         if(!product) return res.status(404).json({
-            message: 'El producto no existe'
+        message: 'El producto no existe'
         })
 
         if(product.image?.public_id){
@@ -80,13 +81,24 @@ export const deleteProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
-        const productUpdate = await Product.findByIdAndUpdate(id, req.body, {
-            new:true
-        })
+        if (req.files?.image) {
+            const product = await Product.findById(id)
+            await deleteImage(product.image.public_id)
+            const rs = await uploadImage(req.files.image.tempFilePath);
+            req.body.image = {
+                public_id: rs.public_id,
+                secure_url: rs.secure_url,
+            };
+            await fs.unlink(req.files.image.tempFilePath);
+        }
 
-        return res.json(productUpdate)
+        const productUpdate = await Product.findByIdAndUpdate(id, req.body,{ 
+            new: true 
+        });
+
+        return res.json(productUpdate);
     } catch (error){
         return res.status(500).json({message:error.message})
     }
