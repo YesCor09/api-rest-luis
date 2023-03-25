@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/products', getProducts)
 router.get('/products/:id', getProduct)
-router.post('/getProductsCategorie', getProductCategorie)
+router.get('/getProductsCategorie/:id', getProductCategorie)
 router.post('/products', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), createProduct)
 router.put('/updateProducts/:id', fileUpload({useTempFiles : true, tempFileDir : './uploads'}), updateProduct)
 router.delete('/products/:id', deleteProduct)
