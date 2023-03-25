@@ -15,8 +15,14 @@ const productSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    stock:{
+        type: Number,
+        default: 1
+    },
     categorie:{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Categorie',
+        required: true,
     },
     image:{
         public_id: String,
