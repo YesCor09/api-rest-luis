@@ -6,6 +6,7 @@ import productsRoutes from './routes/products.routes.js'
 import usersRoutes from './routes/users.routes.js'
 import ventasRoutes from './routes/ventas.routes.js'
 import userTypeRoutes from './routes/userType.routes.js'
+import categorieRoutes from './routes/categorie.routes.js'
 
 const app = express()
 
@@ -19,5 +20,6 @@ app.use(productsRoutes)
 app.use(usersRoutes)
 app.use(ventasRoutes)
 app.use(userTypeRoutes)
+app.use(categorieRoutes)
 
 export default app
