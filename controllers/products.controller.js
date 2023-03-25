@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 
 export const getProducts = async (req, res) => {
     try{
-        const products = await Product.find()
+        const products = await Product.find().populate('categorie')
         res.json(products)
     } catch(error){
         return res.status(500).json({message:error.message})
@@ -13,12 +13,13 @@ export const getProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        const {name,description,price,categorie} = req.body
+        const {name,description,price,stock,categorie} = req.body
         
         const product = new Product({
             name,
             description,
             price,
+            stock,
             categorie
         })
 
@@ -43,7 +44,7 @@ export const getProduct = async (req, res) => {
         const product = await Product.findById(req.params.id)
 
         if(!product) return res.status(404).json({
-        message: 'El producto no existe'
+            message: 'El producto no existe'
         })
         return res.send(product)
     } catch (error){
