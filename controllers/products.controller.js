@@ -54,8 +54,8 @@ export const getProduct = async (req, res) => {
 
 export const getProductCategorie = async (req, res) =>{
     try {
-        const {categorie} = req.body
-        const product = await Product.find({categorie})
+        //const {categorieId} = req.params
+        const product = await Product.find({categorie: req.params.id}).populate('categorie')
         return res.send(product)
     } catch (error) {
         console.error(error)
