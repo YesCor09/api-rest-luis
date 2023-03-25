@@ -6,12 +6,12 @@ import { transporter } from '../utils/nodemailer.js';
 
 
 export const getUsers = async (req, res) => {
-  try{
-    const users = await User.find()
-    res.json(users)
-  } catch(error){
-    return res.status(500).json({message:error.message})
-  }
+    try{
+        const users = await User.find().populate('typeUser');
+        res.json(users)
+    } catch(error){
+        return res.status(500).json({message:error.message})
+    }
 }
 
 export const createUser = async (req, res) => {
@@ -49,7 +49,7 @@ export const createUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
+        const user = await User.findById(req.params.id).populate('typeUser')
 
         if(!user) return res.status(404).json({
             message: 'El usuario no existe'

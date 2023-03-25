@@ -1,7 +1,6 @@
 import Product from '../models/product.model.js'
 import {uploadImage, deleteImage} from '../utils/cloudinary.js'
 import fs from 'fs-extra'
-import {ObjectId}  from 'mongodb'
 
 export const getProducts = async (req, res) => {
     try{
@@ -66,7 +65,7 @@ export const deleteProduct = async (req, res) => {
     try {
         const product = await Product.findByIdAndDelete(req.params.id)
         if(!product) return res.status(404).json({
-        message: 'El producto no existe'
+            message: 'El producto no existe'
         })
 
         if(product.image?.public_id){

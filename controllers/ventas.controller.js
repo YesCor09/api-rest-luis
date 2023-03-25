@@ -1,4 +1,5 @@
 import Ventas from '../models/ventas.model.js'
+
 export const getVentas = async (req, res) => {
     try{
         const ventas = await Ventas.find().populate('user').populate('products.product');
@@ -20,7 +21,7 @@ export const createVenta = async (req, res) => {
 
 export const getVenta = async (req, res) => {
     try {
-        const venta = await Ventas.findById(req.params.id)
+        const venta = await Ventas.findById(req.params.id).populate('user').populate('products.product')
 
         if(!venta) return res.status(404).json({
             message: 'La venta no existe'
