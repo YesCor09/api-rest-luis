@@ -1,23 +1,18 @@
 import mongoose from "mongoose";
 
 const datosEnvioSchema = mongoose.Schema({
-    estado:{
+    colonia:{
         type: String,
         required: true,
         trim: true
     },
-    ciudad:{
+    calle:{
         type: String,
         required: true,
         trim: true
     },
-    municipio:{
+    noCasa:{
         type: String,
-        required: true,
-        trim: true
-    },
-    cp:{
-        type: Number,
         required: true,
         trim: true
     },
@@ -28,6 +23,11 @@ const datosEnvioSchema = mongoose.Schema({
     },
     telefono:{
         type: Number,
+        required: true,
+        trim: true
+    },
+    referencias:{
+        type: String,
         required: true,
         trim: true
     },
